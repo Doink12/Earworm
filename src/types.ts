@@ -29,6 +29,8 @@ export interface Artist {
   /** Composite score at the start of the current month, for growth-badge math. */
   scoreAtMonthStart: number;
   rewardTiers: RewardTier[];
+  /** Platform-wide points contributed to this artist this month, across all users — feeds the payout split. */
+  platformPointsThisMonth: number;
 }
 
 /** A single points contribution, logged forever for leaderboard math. */

@@ -2,6 +2,7 @@ import { useMemo } from "react";
 import { Link } from "react-router-dom";
 import { useUser } from "../context/UserContext";
 import { getArtist, liveScoreMap } from "../data/artists";
+import { OTHER_USERS, OTHER_CONTRIBUTIONS } from "../data/user";
 import { computeHoldings, totalPointsInvested } from "../lib/portfolio";
 import { computeLeaderboardEntry } from "../lib/leaderboard";
 import { remainingAllowance } from "../lib/points";
@@ -24,6 +25,15 @@ export function PortfolioScreen() {
   const watchedArtists = user.watchlist
     .map((id) => getArtist(id))
     .filter((a): a is NonNullable<typeof a> => a !== undefined);
+
+  const friends = useMemo(
+    () =>
+      OTHER_USERS.map((friend) => ({
+        friend,
+        holdings: computeHoldings(friend.id, OTHER_CONTRIBUTIONS, scores),
+      })),
+    [scores],
+  );
 
   return (
     <div className="screen">
@@ -112,6 +122,43 @@ export function PortfolioScreen() {
             </div>
           );
         })}
+      </div>
+
+      <div className="card">
+        <p className="section-title" style={{ marginBottom: 4 }}>
+          Friends &amp; follows
+        </p>
+        {friends.length === 0 && <p className="empty-state">No friends yet.</p>}
+        {friends.map(({ friend, holdings: friendHoldings }) => (
+          <div className="friend-block" key={friend.id}>
+            <div className="friend-block-header">
+              <div className="avatar avatar-sm" style={{ background: friend.avatarColor }}>
+                {initials(friend.name)}
+              </div>
+              <div>
+                <p className="name">{friend.name}</p>
+                <p className="sub">{friend.country}</p>
+              </div>
+            </div>
+            {friendHoldings.length === 0 ? (
+              <p className="empty-state" style={{ padding: 0 }}>
+                Not backing anyone yet.
+              </p>
+            ) : (
+              <div className="backing-tags">
+                {friendHoldings.map((h) => {
+                  const artist = getArtist(h.artistId);
+                  if (!artist) return null;
+                  return (
+                    <Link className="backing-tag" to={`/artist/${artist.id}`} key={h.artistId}>
+                      {artist.name} <span className="tag-points">{h.cumulativePoints} pts</span>
+                    </Link>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+        ))}
       </div>
     </div>
   );

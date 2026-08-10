@@ -4,6 +4,7 @@ import { DiscoveryScreen } from "./components/DiscoveryScreen";
 import { ArtistProfileScreen } from "./components/ArtistProfileScreen";
 import { LeaderboardScreen } from "./components/LeaderboardScreen";
 import { PortfolioScreen } from "./components/PortfolioScreen";
+import { PayoutScreen } from "./components/PayoutScreen";
 import { BottomNav } from "./components/BottomNav";
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
             <Route path="/" element={<DiscoveryScreen />} />
             <Route path="/artist/:artistId" element={<ArtistProfileScreen />} />
             <Route path="/portfolio" element={<PortfolioScreen />} />
+            <Route path="/payouts" element={<PayoutScreen />} />
             <Route path="/leaderboard" element={<LeaderboardScreen />} />
           </Routes>
           <BottomNav />

@@ -91,11 +91,11 @@ export const CURRENT_USER: User = {
   watchlist: ["dust-chapel"],
 };
 
-// A couple of other users purely so the leaderboard screen has something to rank against.
-export const OTHER_USERS: { id: string; name: string; country: string }[] = [
-  { id: "u2", name: "Priya K.", country: "UK" },
-  { id: "u3", name: "Marco T.", country: "Brazil" },
-  { id: "u4", name: "Jess O.", country: "USA" },
+// Other users — ranked against on the leaderboard, and shown as friends on the Friends & Follows list.
+export const OTHER_USERS: { id: string; name: string; country: string; avatarColor: string }[] = [
+  { id: "u2", name: "Priya K.", country: "UK", avatarColor: "#d8546f" },
+  { id: "u3", name: "Marco T.", country: "Brazil", avatarColor: "#3f8f6b" },
+  { id: "u4", name: "Jess O.", country: "USA", avatarColor: "#5a6ad1" },
 ];
 
 export const OTHER_CONTRIBUTIONS: Contribution[] = [

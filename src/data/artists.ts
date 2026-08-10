@@ -15,6 +15,7 @@ const RAW_ARTISTS: RawArtist[] = [
     country: "USA",
     avatarColor: "#e85d75",
     assumedMonthlyGrowth: 0.08,
+    platformPointsThisMonth: 8200,
     metrics: {
       spotifyFollowers: 1_850_000,
       spotifyListeners: 6_200_000,
@@ -39,6 +40,7 @@ const RAW_ARTISTS: RawArtist[] = [
     country: "USA",
     avatarColor: "#4f5df2",
     assumedMonthlyGrowth: -0.04,
+    platformPointsThisMonth: 3100,
     metrics: {
       spotifyFollowers: 640_000,
       spotifyListeners: 2_800_000,
@@ -63,6 +65,7 @@ const RAW_ARTISTS: RawArtist[] = [
     country: "UK",
     avatarColor: "#2f9e6f",
     assumedMonthlyGrowth: 0.03,
+    platformPointsThisMonth: 1400,
     metrics: {
       spotifyFollowers: 210_000,
       spotifyListeners: 890_000,
@@ -87,6 +90,7 @@ const RAW_ARTISTS: RawArtist[] = [
     country: "Turkey",
     avatarColor: "#f2a134",
     assumedMonthlyGrowth: 0.15,
+    platformPointsThisMonth: 5200,
     metrics: {
       spotifyFollowers: 95_000,
       spotifyListeners: 420_000,
@@ -111,6 +115,7 @@ const RAW_ARTISTS: RawArtist[] = [
     country: "USA",
     avatarColor: "#8a4fd1",
     assumedMonthlyGrowth: -0.02,
+    platformPointsThisMonth: 320,
     metrics: {
       spotifyFollowers: 58_000,
       spotifyListeners: 190_000,
@@ -135,6 +140,7 @@ const RAW_ARTISTS: RawArtist[] = [
     country: "Brazil",
     avatarColor: "#1fb8c4",
     assumedMonthlyGrowth: 0.11,
+    platformPointsThisMonth: 2600,
     metrics: {
       spotifyFollowers: 320_000,
       spotifyListeners: 1_400_000,
