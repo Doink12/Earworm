@@ -1,8 +1,8 @@
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { useUser } from "../context/UserContext";
+import { useArtists } from "../context/ArtistsContext";
 import { OTHER_USERS, OTHER_CONTRIBUTIONS } from "../data/user";
-import { ARTISTS, liveScoreMap } from "../data/artists";
 import { computeLeaderboardEntry, rankLeaderboard } from "../lib/leaderboard";
 import { growthRate } from "../lib/scoring";
 import { formatPercent, initials } from "../lib/format";
@@ -11,9 +11,8 @@ type Scope = "global" | "country";
 
 export function LeaderboardScreen() {
   const { user } = useUser();
+  const { verifiedArtists, scores } = useArtists();
   const [scope, setScope] = useState<Scope>("global");
-
-  const scores = liveScoreMap();
 
   const userEntries = useMemo(() => {
     const allUsers = [{ id: user.id, name: user.name, country: user.country }, ...OTHER_USERS];
@@ -32,14 +31,14 @@ export function LeaderboardScreen() {
   const byBattingAverage = useMemo(() => rankLeaderboard(userEntries, "battingAverage"), [userEntries]);
 
   const artistRows = useMemo(() => {
-    const rows = ARTISTS.map((artist) => ({
+    const rows = verifiedArtists.map((artist) => ({
       artist,
       scoreNow: scores[artist.id],
       growth: growthRate(scores[artist.id], artist.scoreAtMonthStart),
     }));
     const scoped = scope === "country" ? rows.filter((r) => r.artist.country === user.country) : rows;
     return [...scoped].sort((a, b) => b.growth - a.growth);
-  }, [scope, user.country, scores]);
+  }, [scope, user.country, scores, verifiedArtists]);
 
   return (
     <div className="screen">

@@ -23,6 +23,7 @@ function artist(overrides: Partial<Artist> = {}): Artist {
     scoreAtMonthStart: 50,
     rewardTiers: [],
     platformPointsThisMonth: 100,
+    verificationStatus: "verified",
     ...overrides,
   };
 }

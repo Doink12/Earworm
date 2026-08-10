@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { Link } from "react-router-dom";
 import { useUser } from "../context/UserContext";
-import { getArtist, liveScoreMap } from "../data/artists";
+import { useArtists } from "../context/ArtistsContext";
 import { OTHER_USERS, OTHER_CONTRIBUTIONS } from "../data/user";
 import { computeHoldings, totalPointsInvested } from "../lib/portfolio";
 import { computeLeaderboardEntry } from "../lib/leaderboard";
@@ -11,8 +11,7 @@ import { formatPercent, initials } from "../lib/format";
 
 export function PortfolioScreen() {
   const { user, toggleWatch } = useUser();
-
-  const scores = liveScoreMap();
+  const { getArtist, scores } = useArtists();
 
   const holdings = useMemo(() => computeHoldings(user.id, user.contributions, scores), [user, scores]);
   const performance = useMemo(
@@ -161,13 +160,25 @@ export function PortfolioScreen() {
         ))}
       </div>
 
-      <Link className="card dashboard-link" to="/artist-dashboard">
-        <div>
-          <div className="title">Artist dashboard</div>
-          <div className="subtitle">If you're an artist on Earworm, see this month's revenue split</div>
-        </div>
-        <span className="chevron">›</span>
-      </Link>
+      <div className="card">
+        <p className="section-title" style={{ marginBottom: 4 }}>
+          For artists
+        </p>
+        <Link className="dashboard-link" to="/onboarding">
+          <div>
+            <div className="title">Apply to join as an artist</div>
+            <div className="subtitle">Verify your reach and set up reward tiers</div>
+          </div>
+          <span className="chevron">›</span>
+        </Link>
+        <Link className="dashboard-link" to="/artist-dashboard">
+          <div>
+            <div className="title">Artist dashboard</div>
+            <div className="subtitle">If you're already verified, see this month's revenue split</div>
+          </div>
+          <span className="chevron">›</span>
+        </Link>
+      </div>
     </div>
   );
 }

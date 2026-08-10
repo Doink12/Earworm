@@ -31,6 +31,8 @@ export interface Artist {
   rewardTiers: RewardTier[];
   /** Platform-wide points contributed to this artist this month, across all users — feeds the payout split. */
   platformPointsThisMonth: number;
+  /** Pending artists aren't in Discover/Leaderboard/payouts yet and can't be backed. */
+  verificationStatus: "verified" | "pending";
 }
 
 /** A single points contribution, logged forever for leaderboard math. */

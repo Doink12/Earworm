@@ -1,7 +1,7 @@
 import type { Artist } from "../types";
 import { computeScores } from "../lib/scoring";
 
-interface RawArtist extends Omit<Artist, "scoreAtMonthStart"> {
+interface RawArtist extends Omit<Artist, "scoreAtMonthStart" | "verificationStatus"> {
   /** Assumed growth this month, used only to derive a plausible monthStart baseline for the mock. */
   assumedMonthlyGrowth: number;
 }
@@ -165,7 +165,7 @@ export const ARTISTS: Artist[] = RAW_ARTISTS.map((raw, i) => {
   const { assumedMonthlyGrowth, ...artist } = raw;
   const scoreNow = scoreResults[i].score;
   const scoreAtMonthStart = scoreNow / (1 + assumedMonthlyGrowth);
-  return { ...artist, scoreAtMonthStart };
+  return { ...artist, scoreAtMonthStart, verificationStatus: "verified" as const };
 });
 
 export function getArtist(id: string): Artist | undefined {

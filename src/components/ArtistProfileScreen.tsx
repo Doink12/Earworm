@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { getArtist, liveScoreMap } from "../data/artists";
+import { useArtists } from "../context/ArtistsContext";
 import { useUser } from "../context/UserContext";
 import { cumulativePoints, remainingAllowance } from "../lib/points";
 import { growthRate } from "../lib/scoring";
@@ -12,6 +12,7 @@ import { initials } from "../lib/format";
 
 export function ArtistProfileScreen() {
   const { artistId } = useParams<{ artistId: string }>();
+  const { getArtist, scores } = useArtists();
   const { user, backArtist, toggleWatch } = useUser();
   const [justConfirmed, setJustConfirmed] = useState<number | null>(null);
 
@@ -27,7 +28,8 @@ export function ArtistProfileScreen() {
     );
   }
 
-  const scoreNow = liveScoreMap()[artist.id] ?? artist.scoreAtMonthStart;
+  const isPending = artist.verificationStatus === "pending";
+  const scoreNow = scores[artist.id] ?? artist.scoreAtMonthStart;
   const growth = growthRate(scoreNow, artist.scoreAtMonthStart);
   const alreadyBacked = cumulativePoints(user, artist.id);
   const remaining = remainingAllowance(user);
@@ -59,6 +61,12 @@ export function ArtistProfileScreen() {
         </button>
       </div>
 
+      {isPending && (
+        <p className="pending-banner">
+          ⏳ This artist is pending verification and isn't backable yet.
+        </p>
+      )}
+
       <div className="card score-card">
         <div>
           <div className="score-value">{scoreNow.toFixed(1)}</div>
@@ -74,14 +82,16 @@ export function ArtistProfileScreen() {
         <MetricsGrid metrics={artist.metrics} />
       </div>
 
-      <BackingSlider
-        remainingAllowance={remaining}
-        justConfirmedPoints={justConfirmed}
-        onConfirm={(points) => {
-          backArtist({ artistId: artist.id, points, scoreAtContribution: scoreNow });
-          setJustConfirmed(points);
-        }}
-      />
+      {!isPending && (
+        <BackingSlider
+          remainingAllowance={remaining}
+          justConfirmedPoints={justConfirmed}
+          onConfirm={(points) => {
+            backArtist({ artistId: artist.id, points, scoreAtContribution: scoreNow });
+            setJustConfirmed(points);
+          }}
+        />
+      )}
 
       <RewardTierLadder tiers={artist.rewardTiers} cumulativePoints={alreadyBacked} />
     </div>

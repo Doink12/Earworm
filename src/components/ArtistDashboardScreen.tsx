@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { ARTISTS, getArtist, liveScoreMap } from "../data/artists";
+import { useArtists } from "../context/ArtistsContext";
 import { computeMonthlyPayouts } from "../lib/monthlyPayouts";
 import { initials } from "../lib/format";
 
@@ -7,8 +7,8 @@ const ACTIVE_SUBSCRIBERS_THIS_MONTH = 24_600;
 const MINIMUM_PAYOUT = 5;
 
 export function ArtistDashboardScreen() {
-  const scores = liveScoreMap();
-  const { pool, rows } = computeMonthlyPayouts(ARTISTS, scores, ACTIVE_SUBSCRIBERS_THIS_MONTH, MINIMUM_PAYOUT);
+  const { verifiedArtists, getArtist, scores } = useArtists();
+  const { pool, rows } = computeMonthlyPayouts(verifiedArtists, scores, ACTIVE_SUBSCRIBERS_THIS_MONTH, MINIMUM_PAYOUT);
 
   return (
     <div className="screen">

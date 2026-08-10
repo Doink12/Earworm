@@ -1,12 +1,12 @@
 import { Link } from "react-router-dom";
-import { ARTISTS, liveScoreMap } from "../data/artists";
+import { useArtists } from "../context/ArtistsContext";
 import { growthRate } from "../lib/scoring";
 import { initials } from "../lib/format";
 import { formatPercent } from "../lib/format";
 
 export function DiscoveryScreen() {
-  const scores = liveScoreMap();
-  const ranked = [...ARTISTS].sort((a, b) => scores[b.id] - scores[a.id]);
+  const { verifiedArtists, scores } = useArtists();
+  const ranked = [...verifiedArtists].sort((a, b) => scores[b.id] - scores[a.id]);
 
   return (
     <div className="screen">
