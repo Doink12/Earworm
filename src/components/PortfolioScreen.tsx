@@ -40,18 +40,12 @@ export function PortfolioScreen() {
           <div className="stat-value">{remaining}</div>
           <div className="stat-label">Left to allocate this month</div>
         </div>
-        <div className="stat-tile">
+        <div className="stat-tile stat-tile-wide">
           <div className={`stat-value ${performance.totalGrowthPoints >= 0 ? "positive" : "negative"}`}>
             {performance.totalGrowthPoints >= 0 ? "+" : ""}
             {performance.totalGrowthPoints.toFixed(1)}
           </div>
           <div className="stat-label">Total growth points</div>
-        </div>
-        <div className="stat-tile">
-          <div className={`stat-value ${performance.battingAverage >= 0 ? "positive" : "negative"}`}>
-            {formatPercent(performance.battingAverage)}
-          </div>
-          <div className="stat-label">Batting average</div>
         </div>
       </div>
 

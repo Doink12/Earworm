@@ -474,6 +474,10 @@ body {
   margin-top: 3px;
 }
 
+.stat-tile-wide {
+  grid-column: span 2;
+}
+
 .holding-row {
   display: flex;
   align-items: center;
