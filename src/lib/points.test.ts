@@ -10,6 +10,7 @@ function baseUser(overrides: Partial<User> = {}): User {
     currentMonth: "2026-08",
     allowances: [{ month: "2026-08", totalAllowance: 100, spent: 0 }],
     contributions: [],
+    watchlist: [],
     ...overrides,
   };
 }

@@ -55,4 +55,6 @@ export interface User {
   currentMonth: string;
   allowances: MonthlyAllowance[];
   contributions: Contribution[];
+  /** Artists the user is tracking but hasn't necessarily backed. */
+  watchlist: string[];
 }

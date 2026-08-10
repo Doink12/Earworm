@@ -120,6 +120,11 @@ body {
   gap: 14px;
 }
 
+.grow {
+  flex: 1;
+  min-width: 0;
+}
+
 .avatar {
   width: 56px;
   height: 56px;
@@ -342,10 +347,6 @@ body {
   color: var(--text-primary);
 }
 
-.artist-list-item .grow {
-  flex: 1;
-}
-
 .artist-list-item .name {
   font-size: 15px;
   font-weight: 700;
@@ -438,4 +439,115 @@ body {
   font-size: 13px;
   text-align: center;
   padding: 24px 0;
+}
+
+.stat-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.stat-tile {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 14px;
+}
+
+.stat-tile .stat-value {
+  font-size: 22px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+.stat-tile .stat-value.positive {
+  color: var(--success);
+}
+
+.stat-tile .stat-value.negative {
+  color: var(--danger);
+}
+
+.stat-tile .stat-label {
+  font-size: 11px;
+  color: var(--text-secondary);
+  margin-top: 3px;
+}
+
+.holding-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+  text-decoration: none;
+  color: var(--text-primary);
+}
+
+.holding-row:last-child {
+  border-bottom: none;
+}
+
+.holding-row .name {
+  font-size: 14px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.holding-row .sub {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin: 1px 0 0;
+}
+
+.holding-row .right {
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.holding-row .right .score {
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.holding-row .right .delta {
+  font-size: 11px;
+  font-weight: 700;
+  margin-top: 1px;
+}
+
+.delta.positive {
+  color: var(--success);
+}
+
+.delta.negative {
+  color: var(--danger);
+}
+
+.watch-btn {
+  border: 1px solid var(--border);
+  background: var(--bg-pill);
+  color: var(--text-secondary);
+  border-radius: 999px;
+  padding: 7px 14px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.watch-btn.watching {
+  background: var(--accent-soft);
+  color: var(--accent);
+  border-color: transparent;
+}
+
+.unwatch-btn {
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 12px;
+  cursor: pointer;
+  flex-shrink: 0;
+  padding: 4px;
 }

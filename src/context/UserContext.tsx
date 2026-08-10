@@ -6,6 +6,7 @@ import { contribute, type ContributionInput } from "../lib/points";
 interface UserContextValue {
   user: User;
   backArtist: (input: ContributionInput) => void;
+  toggleWatch: (artistId: string) => void;
 }
 
 const UserContext = createContext<UserContextValue | undefined>(undefined);
@@ -17,6 +18,13 @@ export function UserProvider({ children }: { children: ReactNode }) {
     () => ({
       user,
       backArtist: (input) => setUser((prev) => contribute(prev, input)),
+      toggleWatch: (artistId) =>
+        setUser((prev) => ({
+          ...prev,
+          watchlist: prev.watchlist.includes(artistId)
+            ? prev.watchlist.filter((id) => id !== artistId)
+            : [...prev.watchlist, artistId],
+        })),
     }),
     [user],
   );

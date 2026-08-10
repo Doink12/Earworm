@@ -88,6 +88,7 @@ export const CURRENT_USER: User = {
   currentMonth: "2026-08",
   allowances,
   contributions,
+  watchlist: ["dust-chapel"],
 };
 
 // A couple of other users purely so the leaderboard screen has something to rank against.

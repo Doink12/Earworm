@@ -3,6 +3,7 @@ import { UserProvider } from "./context/UserContext";
 import { DiscoveryScreen } from "./components/DiscoveryScreen";
 import { ArtistProfileScreen } from "./components/ArtistProfileScreen";
 import { LeaderboardScreen } from "./components/LeaderboardScreen";
+import { PortfolioScreen } from "./components/PortfolioScreen";
 import { BottomNav } from "./components/BottomNav";
 
 function App() {
@@ -13,6 +14,7 @@ function App() {
           <Routes>
             <Route path="/" element={<DiscoveryScreen />} />
             <Route path="/artist/:artistId" element={<ArtistProfileScreen />} />
+            <Route path="/portfolio" element={<PortfolioScreen />} />
             <Route path="/leaderboard" element={<LeaderboardScreen />} />
           </Routes>
           <BottomNav />

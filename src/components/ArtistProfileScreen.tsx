@@ -12,7 +12,7 @@ import { initials } from "../lib/format";
 
 export function ArtistProfileScreen() {
   const { artistId } = useParams<{ artistId: string }>();
-  const { user, backArtist } = useUser();
+  const { user, backArtist, toggleWatch } = useUser();
   const [justConfirmed, setJustConfirmed] = useState<number | null>(null);
 
   const artist = artistId ? getArtist(artistId) : undefined;
@@ -31,6 +31,7 @@ export function ArtistProfileScreen() {
   const growth = growthRate(scoreNow, artist.scoreAtMonthStart);
   const alreadyBacked = cumulativePoints(user, artist.id);
   const remaining = remainingAllowance(user);
+  const isWatching = user.watchlist.includes(artist.id);
 
   return (
     <div className="screen">
@@ -44,12 +45,18 @@ export function ArtistProfileScreen() {
         <div className="avatar" style={{ background: artist.avatarColor }}>
           {initials(artist.name)}
         </div>
-        <div>
+        <div className="grow">
           <p className="name">{artist.name}</p>
           <p className="meta">
             {artist.genre} · {artist.location}
           </p>
         </div>
+        <button
+          className={`watch-btn ${isWatching ? "watching" : ""}`}
+          onClick={() => toggleWatch(artist.id)}
+        >
+          {isWatching ? "★ Watching" : "☆ Watch"}
+        </button>
       </div>
 
       <div className="card score-card">
