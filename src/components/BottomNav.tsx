@@ -9,9 +9,6 @@ export function BottomNav() {
       <NavLink to="/portfolio" className={({ isActive }) => (isActive ? "active" : "")}>
         You
       </NavLink>
-      <NavLink to="/payouts" className={({ isActive }) => (isActive ? "active" : "")}>
-        Payouts
-      </NavLink>
       <NavLink to="/leaderboard" className={({ isActive }) => (isActive ? "active" : "")}>
         Leaderboard
       </NavLink>

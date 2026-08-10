@@ -160,6 +160,14 @@ export function PortfolioScreen() {
           </div>
         ))}
       </div>
+
+      <Link className="card dashboard-link" to="/artist-dashboard">
+        <div>
+          <div className="title">Artist dashboard</div>
+          <div className="subtitle">If you're an artist on Earworm, see this month's revenue split</div>
+        </div>
+        <span className="chevron">›</span>
+      </Link>
     </div>
   );
 }

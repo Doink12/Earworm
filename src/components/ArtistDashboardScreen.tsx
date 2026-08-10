@@ -6,14 +6,20 @@ import { initials } from "../lib/format";
 const ACTIVE_SUBSCRIBERS_THIS_MONTH = 24_600;
 const MINIMUM_PAYOUT = 5;
 
-export function PayoutScreen() {
+export function ArtistDashboardScreen() {
   const scores = liveScoreMap();
   const { pool, rows } = computeMonthlyPayouts(ARTISTS, scores, ACTIVE_SUBSCRIBERS_THIS_MONTH, MINIMUM_PAYOUT);
 
   return (
     <div className="screen">
       <div className="top-bar" style={{ padding: 0 }}>
-        <h1>Artist payouts</h1>
+        <Link className="back-link" to="/portfolio">
+          ← You
+        </Link>
+      </div>
+
+      <div className="top-bar" style={{ padding: 0 }}>
+        <h1>Artist dashboard</h1>
       </div>
       <p className="rough-note">
         Rough placeholder — the spec leaves the minimum payout floor undecided (using $5 here) and
