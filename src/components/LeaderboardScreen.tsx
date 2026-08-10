@@ -1,8 +1,11 @@
 import { useMemo, useState } from "react";
+import { Link } from "react-router-dom";
 import { useUser } from "../context/UserContext";
 import { OTHER_USERS, OTHER_CONTRIBUTIONS } from "../data/user";
-import { liveScoreMap } from "../data/artists";
+import { ARTISTS, liveScoreMap } from "../data/artists";
 import { computeLeaderboardEntry, rankLeaderboard } from "../lib/leaderboard";
+import { growthRate } from "../lib/scoring";
+import { formatPercent, initials } from "../lib/format";
 
 type Scope = "global" | "country";
 
@@ -10,12 +13,10 @@ export function LeaderboardScreen() {
   const { user } = useUser();
   const [scope, setScope] = useState<Scope>("global");
 
-  const rows = useMemo(() => {
-    const scores = liveScoreMap();
-    const allUsers = [
-      { id: user.id, name: user.name, country: user.country },
-      ...OTHER_USERS,
-    ];
+  const scores = liveScoreMap();
+
+  const userEntries = useMemo(() => {
+    const allUsers = [{ id: user.id, name: user.name, country: user.country }, ...OTHER_USERS];
     const allContributions = [...user.contributions, ...OTHER_CONTRIBUTIONS];
 
     const entries = allUsers.map((u) => ({
@@ -24,9 +25,21 @@ export function LeaderboardScreen() {
       country: u.country,
     }));
 
-    const scoped = scope === "country" ? entries.filter((e) => e.country === user.country) : entries;
-    return rankLeaderboard(scoped, "totalGrowthPoints");
-  }, [user, scope]);
+    return scope === "country" ? entries.filter((e) => e.country === user.country) : entries;
+  }, [user, scope, scores]);
+
+  const byGrowthPoints = useMemo(() => rankLeaderboard(userEntries, "totalGrowthPoints"), [userEntries]);
+  const byBattingAverage = useMemo(() => rankLeaderboard(userEntries, "battingAverage"), [userEntries]);
+
+  const artistRows = useMemo(() => {
+    const rows = ARTISTS.map((artist) => ({
+      artist,
+      scoreNow: scores[artist.id],
+      growth: growthRate(scores[artist.id], artist.scoreAtMonthStart),
+    }));
+    const scoped = scope === "country" ? rows.filter((r) => r.artist.country === user.country) : rows;
+    return [...scoped].sort((a, b) => b.growth - a.growth);
+  }, [scope, user.country, scores]);
 
   return (
     <div className="screen">
@@ -51,21 +64,57 @@ export function LeaderboardScreen() {
         <p className="section-title" style={{ marginBottom: 10 }}>
           Growth points
         </p>
-        {rows.length === 0 && <p className="empty-state">No one here yet.</p>}
-        {rows.map((row, i) => {
-          const value = row.totalGrowthPoints;
-          const display = value.toFixed(1);
-          return (
-            <div className="leaderboard-row" key={row.userId}>
-              <div className="leaderboard-rank">{i + 1}</div>
-              <div className="leaderboard-name">
-                {row.name}
-                {row.userId === user.id && " (you)"}
-              </div>
-              <div className={`leaderboard-metric ${value >= 0 ? "positive" : "negative"}`}>{display}</div>
+        {byGrowthPoints.length === 0 && <p className="empty-state">No one here yet.</p>}
+        {byGrowthPoints.map((row, i) => (
+          <div className="leaderboard-row" key={row.userId}>
+            <div className="leaderboard-rank">{i + 1}</div>
+            <div className="leaderboard-name">
+              {row.name}
+              {row.userId === user.id && " (you)"}
             </div>
-          );
-        })}
+            <div className={`leaderboard-metric ${row.totalGrowthPoints >= 0 ? "positive" : "negative"}`}>
+              {row.totalGrowthPoints.toFixed(1)}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div className="card">
+        <p className="section-title" style={{ marginBottom: 10 }}>
+          Top % growth — users
+        </p>
+        {byBattingAverage.length === 0 && <p className="empty-state">No one here yet.</p>}
+        {byBattingAverage.map((row, i) => (
+          <div className="leaderboard-row" key={row.userId}>
+            <div className="leaderboard-rank">{i + 1}</div>
+            <div className="leaderboard-name">
+              {row.name}
+              {row.userId === user.id && " (you)"}
+            </div>
+            <div className={`leaderboard-metric ${row.battingAverage >= 0 ? "positive" : "negative"}`}>
+              {formatPercent(row.battingAverage)}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div className="card">
+        <p className="section-title" style={{ marginBottom: 10 }}>
+          Top % growth — artists
+        </p>
+        {artistRows.length === 0 && <p className="empty-state">No one here yet.</p>}
+        {artistRows.map(({ artist, growth }, i) => (
+          <Link className="leaderboard-row" to={`/artist/${artist.id}`} key={artist.id}>
+            <div className="leaderboard-rank">{i + 1}</div>
+            <div className="avatar avatar-sm" style={{ background: artist.avatarColor, marginRight: 2 }}>
+              {initials(artist.name)}
+            </div>
+            <div className="leaderboard-name">{artist.name}</div>
+            <div className={`leaderboard-metric ${growth >= 0 ? "positive" : "negative"}`}>
+              {formatPercent(growth)}
+            </div>
+          </Link>
+        ))}
       </div>
     </div>
   );

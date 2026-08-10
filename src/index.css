@@ -394,6 +394,8 @@ body {
   gap: 12px;
   padding: 10px 0;
   border-bottom: 1px solid var(--border);
+  text-decoration: none;
+  color: var(--text-primary);
 }
 
 .leaderboard-row:last-child {
